@@ -252,3 +252,14 @@ class FederatedDataset:
                 "Please set the `split` argument. You can only omit the split keyword "
                 "if there is exactly one partitioner specified."
             )
+            
+    def _view_dataset(self) -> {}:
+        """Returns data from dataset that has been instantiated in json format"""
+        view_data = {
+            "raw_dataset": {
+                "num_train": len(self._dataset["train"]),
+                "num_test": len(self._dataset["test"])
+            },
+            "num_partitions": self._partitioners["train"].num_partitions
+        }
+        return view_data
