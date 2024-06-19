@@ -106,7 +106,10 @@ class History:
         if self.metrics_centralized:
             temp = {}
             for x in self.metrics_centralized.keys():
-                temp.update({x: self.reformat_json(self.metrics_centralized[x])})
+                if x == "big_confusion":
+                    temp.update({x: self.metrics_centralized[x]})
+                else:
+                    temp.update({x: self.reformat_json(self.metrics_centralized[x])})
             rep.update({"History (metrics, centralized)": temp})
         return rep
 
