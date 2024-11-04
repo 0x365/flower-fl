@@ -90,7 +90,7 @@ class History:
     def reformat_json(self, obj) -> {}:
         if isinstance(obj, np.ndarray):
             return obj.tolist()  # Convert numpy array to list
-        elif isinstance(obj, list):
+        elif isinstance(obj, list) or isinstance(obj, tuple):
             return [self.reformat_json(item) for item in obj]  # Recursively apply to list items
         elif isinstance(obj, dict):
             return {key: self.reformat_json(value) for key, value in obj.items()}  # Handle dicts too
