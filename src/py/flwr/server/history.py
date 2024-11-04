@@ -77,31 +77,32 @@ class History:
 
     def reformat_json(self, bad_array) -> {}:
         """Removes start value if one exists"""
-        temp_all = np.array(bad_array)
+        # temp_all = np.array(bad_array)
         temp = {}
-        if temp_all[0,0] == 0:
-            temp.update({"rounds": temp_all[1:,1].tolist()})
-            temp.update({"start": temp_all[0,1].tolist()})
+        # try:
+        if bad_array[0][0] == 0:
+            temp.update({"rounds": np.array(bad_array[1:])[:,1].tolist()})
+            temp.update({"start": np.array(bad_array[0])[1].tolist()})
         else:
-            temp.update({"rounds": temp_all[:,1].tolist()})
+            temp.update({"rounds": np.array(bad_array)[:,1].tolist()})
         return temp
 
     def repr_json(self) -> {}:
         """Ouputs same data as __repr__ below but in json format"""
         rep = {}
         if self.losses_distributed:
-            rep.update({"History (loss, distributed)": (self.losses_distributed)})
+            rep.update({"History (loss, distributed)": self.reformat_json(self.losses_distributed)})
         if self.losses_centralized:
-            rep.update({"History (loss, centralized)": (self.losses_centralized)})
+            rep.update({"History (loss, centralized)": self.reformat_json(self.losses_centralized)})
         if self.metrics_distributed_fit:
             temp = {}
             for x in self.metrics_distributed_fit.keys():
-                temp.update({x: (self.metrics_distributed_fit[x])})
+                temp.update({x: self.reformat_json(self.metrics_distributed_fit[x])})
             rep.update({"History (metrics, distributed, fit)": temp})
         if self.metrics_distributed:
             temp = {}
             for x in self.metrics_distributed.keys():
-                temp.update({x: (self.metrics_distributed[x])})
+                temp.update({x: self.reformat_json(self.metrics_distributed[x])})
             rep.update({"History (metrics, distributed, evaluate)": temp})
         if self.metrics_centralized:
             temp = {}
@@ -109,7 +110,7 @@ class History:
                 if x == "big_confusion":
                     temp.update({x: self.metrics_centralized[x]})
                 else:
-                    temp.update({x: (self.metrics_centralized[x])})
+                    temp.update({x: self.reformat_json(self.metrics_centralized[x])})
             rep.update({"History (metrics, centralized)": temp})
         return rep
 
