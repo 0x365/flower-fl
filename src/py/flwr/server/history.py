@@ -75,17 +75,27 @@ class History:
                 self.metrics_centralized[key] = []
             self.metrics_centralized[key].append((server_round, metrics[key]))
 
-    def reformat_json(self, bad_array) -> {}:
-        """Removes start value if one exists"""
-        # temp_all = np.array(bad_array)
-        temp = {}
-        # try:
-        if bad_array[0][0] == 0:
-            temp.update({"rounds": np.array(bad_array[1:])[:,1].tolist()})
-            temp.update({"start": np.array(bad_array[0])[1].tolist()})
+    # def reformat_json(self, bad_array) -> {}:
+    #     """Removes start value if one exists"""
+    #     # temp_all = np.array(bad_array)
+    #     temp = {}
+    #     # try:
+    #     if bad_array[0][0] == 0:
+    #         temp.update({"rounds": np.array(bad_array[1:])[:,1].tolist()})
+    #         temp.update({"start": np.array(bad_array[0])[1].tolist()})
+    #     else:
+    #         temp.update({"rounds": np.array(bad_array)[:,1].tolist()})
+    #     return temp
+    
+    def reformat_json(self, obj) -> {}:
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()  # Convert numpy array to list
+        elif isinstance(obj, list):
+            return [self.reformat_json(item) for item in obj]  # Recursively apply to list items
+        elif isinstance(obj, dict):
+            return {key: self.reformat_json(value) for key, value in obj.items()}  # Handle dicts too
         else:
-            temp.update({"rounds": np.array(bad_array)[:,1].tolist()})
-        return temp
+            return obj
 
     def repr_json(self) -> {}:
         """Ouputs same data as __repr__ below but in json format"""
