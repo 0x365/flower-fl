@@ -90,18 +90,18 @@ class History:
         """Ouputs same data as __repr__ below but in json format"""
         rep = {}
         if self.losses_distributed:
-            rep.update({"History (loss, distributed)": self.reformat_json(self.losses_distributed)})
+            rep.update({"History (loss, distributed)": (self.losses_distributed)})
         if self.losses_centralized:
-            rep.update({"History (loss, centralized)": self.reformat_json(self.losses_centralized)})
+            rep.update({"History (loss, centralized)": (self.losses_centralized)})
         if self.metrics_distributed_fit:
             temp = {}
             for x in self.metrics_distributed_fit.keys():
-                temp.update({x: self.reformat_json(self.metrics_distributed_fit[x])})
+                temp.update({x: (self.metrics_distributed_fit[x])})
             rep.update({"History (metrics, distributed, fit)": temp})
         if self.metrics_distributed:
             temp = {}
             for x in self.metrics_distributed.keys():
-                temp.update({x: self.reformat_json(self.metrics_distributed[x])})
+                temp.update({x: (self.metrics_distributed[x])})
             rep.update({"History (metrics, distributed, evaluate)": temp})
         if self.metrics_centralized:
             temp = {}
@@ -109,7 +109,7 @@ class History:
                 if x == "big_confusion":
                     temp.update({x: self.metrics_centralized[x]})
                 else:
-                    temp.update({x: self.reformat_json(self.metrics_centralized[x])})
+                    temp.update({x: (self.metrics_centralized[x])})
             rep.update({"History (metrics, centralized)": temp})
         return rep
 
